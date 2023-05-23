@@ -1,0 +1,34 @@
+.fildHolder {
+  width: 100%;
+  max-width: 500px;
+}
+.field {
+  padding: 15px;
+  margin: 5px 0 15px;
+  font-size: 1em;
+  width: 100%;
+  border: 1px solid #8d8d8d;
+  border-radius: 5px;
+  border-style: double;
+}
+.field:focus {
+  border: 2px solid black;
+  outline: 0;
+}
+.caption { 
+  font-size: 0.8em;
+  text-align: left;
+  margin: 0 auto;
+}
+.caption::first-letter {
+  text-transform: uppercase;
+}
+
+@media screen and (min-width: 600px) {
+  .field {
+    font-size: 1.2em;
+  }
+  .caption {
+    font-size: 0.9em;
+  }
+}

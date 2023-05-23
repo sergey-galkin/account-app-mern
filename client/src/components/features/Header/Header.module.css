@@ -1,0 +1,18 @@
+.container {
+  position: fixed;
+  width: 100%;
+  background: #7ac3ff;
+  top: 0;
+}
+.navigation {
+  margin: 20px 10%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.routes {
+  display: flex;
+}
+.account {
+  margin-left: 100px;
+}

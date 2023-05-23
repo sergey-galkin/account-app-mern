@@ -1,0 +1,14 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.btnsHolder {
+  margin-top: 30px;
+}
+.cancelBtn {
+  background: #c00;
+}
+.cancelBtn:hover {
+  background: #ff4141;
+}
