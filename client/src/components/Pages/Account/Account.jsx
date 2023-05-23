@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import css from './Account.module.css';
 
 const Account = () => {
@@ -11,6 +11,7 @@ const Account = () => {
       <main className={css.main}>
       </main>
     </>
+    
  )
 }
 

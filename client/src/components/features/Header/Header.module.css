@@ -1,7 +1,8 @@
 .container {
   position: fixed;
   width: 100%;
-  background: #7ac3ff;
+  height: var(--header-height);
+  background: #0070cb;
   top: 0;
 }
 .navigation {
@@ -9,6 +10,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.logo {
+  font-size: 25px;
 }
 .routes {
   display: flex;
