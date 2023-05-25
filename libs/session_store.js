@@ -1,7 +1,4 @@
-// const session = require('express-session');
 const MongoStore = require('connect-mongo');
-const uri = process.env.DATABASE_SESSION_URL;
-console.log(uri);
 
 const sessionStore = MongoStore.create(
   {

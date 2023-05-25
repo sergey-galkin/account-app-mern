@@ -48,7 +48,7 @@ const registration = async (req, res, next) => {
     salt: Math.random() + '',
     password: req.body.password,
     email: req.body.email,
-    birthday: req.body.birthday,
+    birthDate: req.body.birthDate,
     sex: req.body.sex,
     photoFileName: handledPhotoFileName,
   });

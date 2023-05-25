@@ -5,6 +5,7 @@ import H1 from '../../common/H1/H1';
 import { useIdentificationQuery, useSignOutMutation } from '../../../api/authApiSlice';
 import SingUpForm from '../../features/Forms/SingUpForm/SingUpForm';
 import PageTemplate from '../../common/PageTemplate/PageTemplate';
+import SingInForm from '../../features/Forms/SingInForm/SingInForm';
 
 const headers = {
   ['sign up']: 'Sign Up',
@@ -13,7 +14,7 @@ const headers = {
 }
 
 const Index = () => {
-  const { data: user } = useIdentificationQuery;
+  const { data: user } = useIdentificationQuery();
   const [signOut] = useSignOutMutation();
 
   const [action, setAction] = useState('');
@@ -34,11 +35,11 @@ const Index = () => {
     <PageTemplate classesArr={templateClasses}>
       { header }
       { user 
-        ? <Button classesArr={[css.btn]} onClick={signOut}>Sign Out</Button>
+        ? <Button classesArr={[css.btn, css.signOutBtn]} onClick={signOut}>Sign Out</Button>
         : action === 'sign up'
         ? <SingUpForm toStartPage={buttonsHandlers.toStartPage}/>
         : action === 'sign in'
-        ? <></>
+        ? <SingInForm toStartPage={buttonsHandlers.toStartPage}/>
         : 
         <>
           <Button classesArr={[css.btn]} onClick={buttonsHandlers.signUp}>Sign Up</Button>

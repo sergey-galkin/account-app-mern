@@ -5,8 +5,8 @@ import { useIdentificationQuery, useSignOutMutation } from '../../../api/authApi
 import StyledNavLink from '../../common/StyledNavLink/StyledNavLink';
 
 const Header = () => {
-  const { data: user } = useIdentificationQuery();
-  const [ signOut ] = useSignOutMutation();
+  // const { data: user } = useIdentificationQuery();
+  // const [ signOut ] = useSignOutMutation();
 
   return (
     <div className={css.container}>
@@ -15,10 +15,11 @@ const Header = () => {
           <StyledNavLink to={'/'} classesArr={[css.logo]} >APP</StyledNavLink>
           <ul className={css.routes}>
             <StyledNavLink to={'/people'}>people</StyledNavLink>
-            { user
+            <StyledNavLink to={'/account'} classesArr={[css.account]}>account</StyledNavLink>
+            {/* { user
               ? <StyledNavLink to={'/'} onClick={signOut}>sign out</StyledNavLink>
               : <StyledNavLink to={'/account'} classesArr={[css.account]}>account</StyledNavLink>
-            }
+            } */}
           </ul>
         </nav>
       </ContentHolder>

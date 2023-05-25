@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  birthday: Date,
+  birthDate: Date,
   sex: String,
   photoFileName: String,
 });
@@ -31,10 +31,6 @@ userSchema.methods.encryptPassword = function (password) {
 
 userSchema.methods.checkPassword = function (password) {
   return this.encryptPassword(password) === this.hashedPassword;
-};
-
-userSchema.statics.checkLogin = function(name, cb) {
-  return this.findOne({ name: new RegExp('^' + name + '$', 'i')}, cb);
 };
 
 userSchema.virtual('password')

@@ -1,11 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import css from './SingUpForm.module.css';
 import Button from '../../../common/Button/Button';
 import Input from '../../../common/Input/Input';
-// import { useDispatch, useSelector } from 'react-redux';
-import { useAuthenticationMutation } from '../../../../api/authApiSlice';
-// import { resetCredentials, resetChecks, setCredentials, setChecks, setMessage } from './LoginWindowSlice';
-// import ContentHolder from '../../../common/ContentHolder/ContentHolder';
 import Select from '../../../common/Select/Select';
 import InputFile from '../../../common/InputFile/InputFile';
 import { createPortal } from 'react-dom';
@@ -64,16 +60,7 @@ const initialWarnings = {
   photo: '',
 };
 
-const getInitialState = (initialValue) => {
-  return {
-    login: initialValue,
-    password: initialValue,
-  }
-};
-
 const SingUpForm = ({ toStartPage }) => {
-  const [auth] = useAuthenticationMutation();
-  // const dispatch = useDispatch();
   const [message, setMessage] = useState('');
   const [credentials, setCredentials] = useState(initialWarnings);
   const [warnings, setWarnings] = useState(initialWarnings);
@@ -91,6 +78,7 @@ const SingUpForm = ({ toStartPage }) => {
     e.preventDefault();
 
     setWarnings(initialWarnings);
+    setMessage('In progress...');
 
     let res;
     try {
@@ -104,7 +92,7 @@ const SingUpForm = ({ toStartPage }) => {
         }
       )
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setMessage('Something went wrong');
       setTimeout(() => setMessage(''), 1000);
       return;

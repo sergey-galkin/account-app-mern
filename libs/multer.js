@@ -2,8 +2,6 @@ const multer = require('multer');
 const path = require('path');
 const { tmpDirPath } = require('./config');
 
-// createDirIfNeed(tmpDirPath);
-
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, tmpDirPath);
@@ -24,18 +22,6 @@ function fileFilter (req, file, cb) {
     cb(new Error('Bad photo MIME type'))
   }
 };
-
-// function createDirIfNeed(path) {
-//   try {
-//     fs.accessSync(path);
-//   } catch (error) {
-//     try {
-//       fs.mkdirSync(path)
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   }
-// };
 
 const upload = multer({ 
   storage: storage,

@@ -1,40 +1,34 @@
 const User = require("../db/user").User;
 
-const setAuthChecks = (status) => ({
-  name: status,
-  role: status,
+const setWarnings = (message) => ({
+    email: message,
+    password: message,
 });
 
-const setSession = ({ name, birthDate, photoFileName }) => {
-  if (name) return {
-    name,
-    birthDate,
-    photoFileName
-  }
-
-  return null;
+const setSession = (user) => {
+  const fields = ['name', 'email', 'birthDate', 'sex', 'photoFileName'];
+  const session = {};
+  fields.forEach((key) => {session[key] = user[key]});
+  return session;
 };
 
 const authentication = async (req, res) => {
   const authData = req.body;
   
-  let user = {};
+  let user;
   try {
-    user = await User.findUnique({
-      where: {name: authData.name},
-      select: {name: true, password: true, role: true},
-    });
+    user = await User.findOne({email: authData.email});
   } catch (error) {
     console.log(error);
     return res.sendStatus(500);
   }
 
-  const status = user && (authData.password === user.password) ? true : false;
-  const checks = setAuthChecks(status);
+  const status = user && (user.checkPassword(authData.password)) ? true : false;
+  const warnings = setWarnings(status ? '' : 'Check data in this field');
   
   if (status) req.session.user = setSession(user);
   
-  res.send({status, checks});
+  res.send({status, warnings});
 }
 
 module.exports = authentication;

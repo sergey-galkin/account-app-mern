@@ -6,7 +6,7 @@ module.exports = function(app) {
   app.post('/api/registration', handleMultipartFormData, require("./registration"));
   app.get('/api/identification', require("./identification"));
   app.post('/api/authentication', require("./authentication"));
-  app.post('/api/logout', require("./logout"));
+  app.post('/api/signout', require("./signout"));
   app.get('/api/users', require("./users"));
   app.post('/api/updateuser', require("./updateUser"));
   
