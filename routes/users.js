@@ -1,4 +1,4 @@
-const User = require("../db/User");
+const User = require("../db/user").User;
 
 const users = async (req, res) => {
   const { limit, skip, orderColumn, orderDirection } = req.query;

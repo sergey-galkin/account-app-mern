@@ -1,8 +1,47 @@
-const User = require('../db/User');
+const path = require('path');
+const User = require('../db/user').User;
+const { tmpDirPath, photoDirPath } = require('../libs/config');
+const storePhoto = require('../libs/photoHandler');
+const validation = require('../libs/validation');
+const { removeFile } = require('../libs/fileSystem');
 
-const registration = (req, res) => {
+const registration = async (req, res, next) => {
+  const photoFileName = req.file?.filename || '';
+  const tmpPhotoSrc = photoFileName ? path.join(tmpDirPath, photoFileName) : '';
+
   const checks = checkRegData(req.body);
-  if (!checks.status) return res.send(checks);
+  if (!checks.status) {
+    removeFile(tmpPhotoSrc);
+    return res.send(checks);
+  }
+
+  let duplicateUser;
+  try {
+    duplicateUser = await User.findOne({email: req.body.email.toLowerCase()})
+  } catch (error) {
+    removeFile(tmpPhotoSrc);
+    return next(error);
+  }
+
+  if (duplicateUser) {
+    removeFile(tmpPhotoSrc);
+    res.send({
+      status: false,
+      warnings: {
+        email: 'User with specified email is already exist'
+      }
+    });
+    return;
+  } 
+
+  let handledPhotoFileName = '';
+  let handledPhotoSrc;
+  
+  if (photoFileName) {
+    handledPhotoFileName = path.parse(photoFileName).name + '.webp';
+    handledPhotoSrc = path.join(photoDirPath, handledPhotoFileName);
+    await storePhoto(tmpPhotoSrc, handledPhotoSrc);
+  }
 
   const user = new User({
     name: req.body.name,
@@ -11,95 +50,39 @@ const registration = (req, res) => {
     email: req.body.email,
     birthday: req.body.birthday,
     sex: req.body.sex,
+    photoFileName: handledPhotoFileName,
   });
   
-  user.save(function (err, user) {
-    if (err) {
-      console.error(err);
-      res.sendStatus(500);
-      return;
+  try {
+    await user.save();
+  } catch (error) {
+    if (error) {
+      removeFile(tmpPhotoSrc);
+      removeFile(handledPhotoSrc);
+      return next(error);
     }
+  }
 
-    res.send({
-      status: true,
-      msg: 'User created'
-    });
-
+  res.send({
+    status: true,
+    message: 'User created'
   });
 };
 
-// function isEmailUnique(req, res) {
-//   return new Promise(function (resolve, reject) {
-    
-//     User.findOne({email: req.body.email.toLowerCase()}, function (err, _user) {
-//       if (err) {
-//         reject(err);
-//         return;
-//       }
-//       if (_user) {
-//         reject({status: false, warnings: {email: 'User with specified email is already exist.'}});
-//       } else {
-//         resolve();
-//       }
-//     })
-    
-//   })
-// };
-
-function checkRegData({ name, password, email, birthDate, sex }) {
+function checkRegData({ name, password, repeatedPassword, email, birthDate, sex }) {
   let status = true;
   const warnings = {
-    name: checkName(name),
-    password: checkPassword(password),
-    email: checkEmail(email),
-    sex: checkSex(sex),
-    birthDate: checkBirthDate(birthDate),
+    name: validation.checkName(name),
+    password: validation.checkPassword(password),
+    repeatedPassword: validation.checkRepeatedPassword(password, repeatedPassword),
+    email: validation.checkEmail(email),
+    sex: validation.checkSex(sex),
+    birthDate: validation.checkBirthDate(birthDate),
   };
 
-  if (!Object.keys(warnings).length) status = false;
+  if (Object.values(warnings).find(v => v)) status = false;
 
   return {status, warnings};
 };
-
-function checkName(name) {
-  if (name.trim().length < 0) return 'This field is required';
-  return '';
-};
-
-function checkPassword(password) {
-  if (password.length < 7) return 'Password must be at least 7 characters';
-  if (password.length > 100) return 'Password must be less than 100 characters';
-  if (/[а-яё]/i.test(password)) return 'Password must not contain cyrillic characters';
-  if (!/\d/.test(password)) return 'Password must contain at least 1 digit';
-  if (!/[a-z]/.test(password)) return 'Password must contain at least 1 latin alphabet character';
-  if (!/[A-Z]/.test(password)) return 'Password must contain at least 1 uppercase latin alphabet character';
-  if (!/[\[\]\/\\\^\$\.\|\*\+\(\)@!~_={}-]/.test(password)) return 'Password must contain at least 1 special character: []/\\^$.|*+()@!~_={}-';
-  if ((password.match(/[\da-z\[\]\/\\\^\$\.\|\*\+\(\)@!~_={}-]/ig) || []).length != password.length) {
-    return 'The password must contain only the following special characters: []/\\^$.|*+()@!~_={}-';
-  }
-  
-  return '';
-};
-
-function checkEmail(email) {
-  if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/i.test(email)) return 'Email must match the following template: example@example.com';
-  if (email.length > 100) return 'Email must be less than 100 characters';
-  return '';
-};
-
-function checkSex(sex) {
-  if (!/[mf]/i.test(sex)) return 'Check data in this field';
-  return '';
-};
-
-function checkBirthDate(birthDate) {
-  try {
-    new Date(birthDate)
-  } catch (error) {
-    return 'Check data in this field';
-  }
-  return '';
-};
-
 
 module.exports = registration;

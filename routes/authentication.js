@@ -1,14 +1,15 @@
-const User = require("../db/User");
+const User = require("../db/user").User;
 
 const setAuthChecks = (status) => ({
-  login: status,
+  name: status,
   role: status,
 });
 
-const setSession = (user) => {
-  if (user) return {
-    login: user.login,
-    role: user.role,
+const setSession = ({ name, birthDate, photoFileName }) => {
+  if (name) return {
+    name,
+    birthDate,
+    photoFileName
   }
 
   return null;
@@ -17,11 +18,11 @@ const setSession = (user) => {
 const authentication = async (req, res) => {
   const authData = req.body;
   
-  let user;
+  let user = {};
   try {
     user = await User.findUnique({
-      where: {login: authData.login},
-      select: {login: true, password: true, role: true},
+      where: {name: authData.name},
+      select: {name: true, password: true, role: true},
     });
   } catch (error) {
     console.log(error);

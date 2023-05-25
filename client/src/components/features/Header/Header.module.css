@@ -2,7 +2,7 @@
   position: fixed;
   width: 100%;
   height: var(--header-height);
-  background: #0070cb;
+  background: #242424;
   top: 0;
 }
 .navigation {

@@ -1,19 +1,17 @@
-.header {
-  margin-top: 50px;
-  text-align: center;
-}
-.header > h1 {
-  font-size: 3.5em;
-}
-.header > span {
-  display: block;
-  margin-top: 10px;
-  font-size: 0.9em;
-  color: grey;
-}
-.main {
-  margin-top: 50px;
+.template {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.jcCenter {
+  justify-content: center;
+}
+.btn + .btn {
+  margin-top: 20px;
+}
+.signOutBtn {
+  background: #ff4141;
+}
+.signOutBtn:hover {
+  background: #db0000;
 }

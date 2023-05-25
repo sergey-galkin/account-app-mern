@@ -1,7 +1,9 @@
 const path = require('path');
+const { handleMultipartFormData } = require('../libs/multer');
+const errorHandler = require('./error');
 
 module.exports = function(app) {
-  app.get('/api/registration', require("./registration"));
+  app.post('/api/registration', handleMultipartFormData, require("./registration"));
   app.get('/api/identification', require("./identification"));
   app.post('/api/authentication', require("./authentication"));
   app.post('/api/logout', require("./logout"));
@@ -10,9 +12,9 @@ module.exports = function(app) {
   
   app.get('*', (req, res) => {
     res.sendFile(path.join(process.cwd(), "public/index.html"), function (err) {
-      if (err) {
-        res.status(500).send(err);
-      }
+      if (err) res.status(500).send(err);
     });
   });
+
+  app.use(errorHandler);
 }

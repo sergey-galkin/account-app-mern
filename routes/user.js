@@ -1,4 +1,4 @@
-const User = require("../db/User");
+const User = require("../db/user").User;
 
 const todoValidationFunctions = {
   name: (name) => name.trim().length > 0,

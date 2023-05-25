@@ -1,4 +1,4 @@
-const User = require("../db/User");
+const User = require("../db/user").User;
 
 const updateUser = async (req, res) => {
   const user = req.session?.user;

@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
 import css from './Button.module.css';
 
-const Button = memo(({ classesArr = [], caption, handleClick, ...restProps}) => {
+const Button = memo(({ classesArr = [], ...restProps}) => {
   classesArr.push(css.btn);
   return (
-    <button className={classesArr.join(' ')} onClick={handleClick} {...restProps}>{caption}</button>
+    <button className={classesArr.join(' ')} {...restProps} />
   )
 })
 

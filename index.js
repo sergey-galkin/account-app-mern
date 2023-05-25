@@ -3,10 +3,13 @@ const dotenv = require("dotenv");
 const express = require("express");
 const session = require('express-session');
 const routes = require("./routes");
+const { createDirectories } = require("./libs/fileSystem");
 
 const cwd = process.cwd();
 const envFileName = process.env.NODE_ENV === 'production' ? '.env.production' : '.env';
 dotenv.config({path: path.join(cwd, envFileName)});
+
+createDirectories();
 
 const app = express();
 

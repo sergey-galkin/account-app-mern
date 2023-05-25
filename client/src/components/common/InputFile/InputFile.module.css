@@ -1,8 +1,8 @@
-.fildHolder {
+.fieldHolder {
   width: 100%;
   max-width: 500px;
 }
-.fild {
+.field {
   padding: 15px;
   margin: 5px 0 15px;
   font-size: 1em;
@@ -10,11 +10,22 @@
   border: 1px solid #8d8d8d;
   border-radius: 5px;
   border-style: double;
+  background: white;
+  color: grey;
 }
-.fild:focus {
-  border: 2px solid black;
-  outline: 0;
+.field:hover {
+  cursor: pointer;
 }
+.field.chosen {
+  color: black;
+}
+.field > input {
+  display: none;
+  background: transparent;
+}
+/* .field > select:hover {
+  cursor: pointer;
+} */
 .warning { 
   color: red;
   font-size: 0.8em;
@@ -23,7 +34,7 @@
 }
 
 @media screen and (min-width: 600px) {
-  .fild {
+  .field {
     font-size: 1.2em;
   }
   .warning {

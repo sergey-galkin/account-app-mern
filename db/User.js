@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require('../libs/mongoose');
 const crypto = require('node:crypto');
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -20,14 +20,9 @@ const userSchema = mongoose.Schema({
     required: true,
     unique: true,
   },
-  birthday: {
-    day: String,
-    month: String,
-    year: String,
-  },
-  sex: {
-    type: String,
-  },
+  birthday: Date,
+  sex: String,
+  photoFileName: String,
 });
 
 userSchema.methods.encryptPassword = function (password) {

@@ -8,13 +8,13 @@ import Header from '../../features/Header/Header';
 const Layout = () => {
   const { isLoading } = useIdentificationQuery();
   return (
-    <div className={css.container}>
+    <>
       <Header />
       {isLoading 
         ? <Loader />
         : <Outlet />
       }
-    </div>
+    </>
   );
 }
 
