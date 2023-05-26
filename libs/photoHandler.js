@@ -1,7 +1,7 @@
 const sharp = require('sharp');
 const { removeFile } = require('./fileSystem');
 
-module.exports = (src, dist) => {
+exports.storePhoto = (src, dist) => {
   return new Promise(async function (resolve, reject) {
     
     const photo = sharp(src);
@@ -13,6 +13,7 @@ module.exports = (src, dist) => {
       })
       .catch(err => {
         if (err) {
+          console.log('storePhoto');
           console.log(err);
           reject(false)
         }

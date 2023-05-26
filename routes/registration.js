@@ -1,7 +1,7 @@
 const path = require('path');
 const User = require('../db/user').User;
 const { tmpDirPath, photoDirPath, noPhotoFileName } = require('../config/config');
-const storePhoto = require('../libs/photoHandler');
+const { storePhoto } = require('../libs/photoHandler');
 const validation = require('../libs/validation');
 const { removeFile } = require('../libs/fileSystem');
 
@@ -9,7 +9,10 @@ const registration = async (req, res, next) => {
   const photoFileName = req.file?.filename || '';
   const tmpPhotoSrc = photoFileName ? path.join(tmpDirPath, photoFileName) : '';
 
-  const checks = checkRegData(req.body);
+  const regData = req.body;
+  regData.name = regData.name.trim();
+
+  const checks = checkRegData(regData);
   if (!checks.status) {
     removeFile(tmpPhotoSrc);
     return res.send(checks);
@@ -17,7 +20,7 @@ const registration = async (req, res, next) => {
 
   let duplicateUser;
   try {
-    duplicateUser = await User.findOne({email: req.body.email.toLowerCase()})
+    duplicateUser = await User.findOne({email: regData.email.toLowerCase()})
   } catch (error) {
     removeFile(tmpPhotoSrc);
     return next(error);
@@ -34,6 +37,7 @@ const registration = async (req, res, next) => {
     return;
   } 
 
+  // save photo, if photo provided
   let handledPhotoFileName = '';
   let handledPhotoSrc;
   let isPhotoStored = false;
@@ -44,12 +48,12 @@ const registration = async (req, res, next) => {
   }
 
   const user = new User({
-    name: req.body.name,
+    name: regData.name,
     salt: Math.random() + '',
-    password: req.body.password,
-    email: req.body.email,
-    birthDate: req.body.birthDate,
-    sex: req.body.sex,
+    password: regData.password,
+    email: regData.email,
+    birthDate: regData.birthDate,
+    sex: regData.sex,
     photoFileName: isPhotoStored ? handledPhotoFileName : noPhotoFileName,
   });
   
@@ -57,7 +61,6 @@ const registration = async (req, res, next) => {
     await user.save();
   } catch (error) {
     if (error) {
-      removeFile(tmpPhotoSrc);
       removeFile(handledPhotoSrc);
       return next(error);
     }

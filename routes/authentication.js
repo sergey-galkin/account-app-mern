@@ -1,16 +1,10 @@
 const User = require("../db/user").User;
+const { setSession } = require("../libs");
 
 const setWarnings = (message) => ({
     email: message,
     password: message,
 });
-
-const setSession = (user) => {
-  const fields = ['name', 'email', 'birthDate', 'sex', 'photoFileName'];
-  const session = {};
-  fields.forEach((key) => {session[key] = user[key]});
-  return session;
-};
 
 const authentication = async (req, res) => {
   const authData = req.body;

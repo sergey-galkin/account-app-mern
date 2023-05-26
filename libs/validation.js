@@ -2,6 +2,7 @@ module.exports = {
 
   checkName(name) {
     if (name.trim().length === 0) return 'This field is required';
+    if (name.length > 50) return 'Name must be less than 50 characters';
     return '';
   },
   

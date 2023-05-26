@@ -38,7 +38,7 @@ const SingInForm = ({ hideForm }) => {
     setCredentials(p => ({...p, [id]: value}));
   }, []);
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = useCallback(async (e) => {
     e.preventDefault();
 
     setWarnings(initialWarnings);
@@ -59,7 +59,7 @@ const SingInForm = ({ hideForm }) => {
         setTimeout(() => setMessage(''), 1000);
       })
     ;
-  }
+  }, [credentials])
 
   const formInputFields = useMemo(
     () => inputFields.map((f) => (

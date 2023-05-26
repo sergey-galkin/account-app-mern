@@ -9,6 +9,19 @@ import Modal from '../../Modal/Modal';
 import axios from 'axios';
 import Form from '../../../common/Form/Form';
 
+
+const getMaxDate = () => {
+  const today = new Date(),
+        year = today.getFullYear(),
+        month = today.getMonth() + 1,
+        mPref = month < 10 ? '0' : '',
+        day = today.getDate(),
+        dPref = day < 10 ? '0' : ''
+  ;
+
+  return year + '-' + mPref + month + '-' + dPref + day;
+}
+
 const inputFields = [
   {
     id: 'name',
@@ -33,6 +46,7 @@ const inputFields = [
   {
     id: 'birthDate',
     type: 'date',
+    max: getMaxDate(),
   },
 ];
 

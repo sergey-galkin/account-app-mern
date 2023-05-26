@@ -25,20 +25,23 @@ const userSchema = new mongoose.Schema({
   photoFileName: String,
 });
 
-userSchema.methods.encryptPassword = function (password) {
-  return crypto.createHmac('sha512', 'top secret').update(this.salt).update(password).digest('hex');
-};
+userSchema.statics.encryptPassword = encryptPassword;
 
 userSchema.methods.checkPassword = function (password) {
-  return this.encryptPassword(password) === this.hashedPassword;
+  return encryptPassword(password, this.salt) === this.hashedPassword;
 };
 
 userSchema.virtual('password')
   .set(function (password) {
-    this.hashedPassword = this.encryptPassword(password);
+    this.hashedPassword = encryptPassword(password, this.salt);
 });
 
 const User = mongoose.model('User', userSchema);
+
+
+function encryptPassword(password, salt) {
+  return crypto.createHmac('sha512', 'top secret').update(salt).update(password).digest('hex');
+};
 
 
 exports.User = User;

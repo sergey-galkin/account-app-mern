@@ -6,6 +6,8 @@ import Input from '../../../common/Input/Input';
 import Form from '../../../common/Form/Form';
 import { createPortal } from 'react-dom';
 import Modal from '../../Modal/Modal';
+import { useIdentificationQuery } from '../../../../api/authApiSlice';
+import axios from 'axios';
 
 const inputFields = [
   {
@@ -25,17 +27,22 @@ const inputFields = [
   },
 ];
 
-const initialWarnings = {
+const mainFields = {
   name: '',
   photo: '',
   password: '',
+};
+
+const initialCredentials = {
+  ...mainFields,
   repeatedPassword: '',
 };
 
 const EditUserForm = ({ hideForm }) => {
   const [message, setMessage] = useState('');
-  const [credentials, setCredentials] = useState(initialWarnings);
-  const [warnings, setWarnings] = useState(initialWarnings);
+  const [credentials, setCredentials] = useState(initialCredentials);
+  const [warnings, setWarnings] = useState(initialCredentials);
+  const { refetch: reIdentify } = useIdentificationQuery();
 
   const handleFormFieldChange = useCallback((e) => {
     const { id, value } = e.target;
@@ -49,7 +56,7 @@ const EditUserForm = ({ hideForm }) => {
   const handleFormSubmit = useCallback(async (e) => {
     e.preventDefault();
 
-    setWarnings(initialWarnings);
+    setWarnings(initialCredentials);
     setMessage('In progress...');
 
     let res;
@@ -72,12 +79,15 @@ const EditUserForm = ({ hideForm }) => {
 
     if (res.data.status) {
       setMessage(res.data.message);
-      setTimeout(hideForm, 1000);
+      setTimeout(() => {
+        hideForm();
+        reIdentify();
+      }, 1000);
     } else {
       setWarnings(res.data.warnings);
       setMessage('');
     }
-  }, []);
+  }, [credentials]);
 
   const formInputFields = useMemo(
     () => inputFields.map((f) => (
@@ -89,12 +99,18 @@ const EditUserForm = ({ hideForm }) => {
     ))
   , [credentials, warnings]);
 
+  const isEditBtnDisabled = useMemo(
+    () => Object.keys(mainFields).reduce(
+      (res, key) => res ? !credentials[key] : res
+      , true)
+  , [credentials]);
+
   return (
     <>
       <Form onSubmit={handleFormSubmit}>
         {formInputFields}
         <InputFile warning={warnings.photo} id={'photo'} name={'photo'} onChange={handleFormFieldChange}/>
-        <Button classesArr={[css.editBtn]} kind={'positive'} onClick={null} type={'submit'}>Edit</Button>
+        <Button classesArr={[css.editBtn]} kind={'positive'} onClick={null} type={'submit'} disabled={isEditBtnDisabled}>Edit</Button>
       </Form>
       <Button classesArr={[css.cancelBtn]} kind={'negative'} onClick={hideForm}>Cancel</Button>
       {message && createPortal(

@@ -14,7 +14,7 @@ const errorHandler = (err, req, res, next) => {
     res.send({
       status: false,
       warnings: {
-        photo: 'Allowed file extentions: jpg, jpeg, png'
+        photo: 'Allowed file extentions: jpg, jpeg, png, webp'
       }
     })
   } else {

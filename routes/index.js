@@ -8,7 +8,7 @@ module.exports = function(app) {
   app.post('/api/authentication', require("./authentication"));
   app.post('/api/signout', require("./signout"));
   app.get('/api/users', require("./users"));
-  app.post('/api/updateuser', require("./updateUser"));
+  app.post('/api/updateuser', handleMultipartFormData, require("./updateUser"));
   
   app.get('*', (req, res) => {
     res.sendFile(path.join(process.cwd(), "public/index.html"), function (err) {
