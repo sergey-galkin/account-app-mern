@@ -1,22 +1,17 @@
 const User = require("../db/user").User;
 
 const users = async (req, res) => {
-  const { limit, skip, orderColumn, orderDirection } = req.query;
-  let users, amount;
+  const email = req.session?.user?.email;
+
+  let users;
   try {
-    amount = await User.count();
-    users = await User.findMany({
-      take: Number(limit),
-      orderBy: {
-        [orderColumn]: orderDirection,
-      },
-      skip: Number(skip),
-    })
+    users = await User.find({email: {$ne: email}}, 'name birthDate photoFileName');
   } catch (error) {
     console.log(error);
     return res.sendStatus(500);
   }
-  res.send({amount, users});
+  
+  res.send(users);
 }
 
 module.exports = users;

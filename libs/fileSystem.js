@@ -1,5 +1,5 @@
 const fs = require('fs')
-const { tmpDirPath, photoDirPath } = require('./config');
+const { tmpDirPath, photoDirPath } = require('../config/config');
 
 function createDirIfNeed(path) {
   try {

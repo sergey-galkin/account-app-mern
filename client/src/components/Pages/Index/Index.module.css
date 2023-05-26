@@ -9,9 +9,3 @@
 .btn + .btn {
   margin-top: 20px;
 }
-.btn.signOutBtn {
-  background: #ff4141;
-}
-.btn.signOutBtn:hover {
-  background: #db0000;
-}

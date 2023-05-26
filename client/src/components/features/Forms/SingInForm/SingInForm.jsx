@@ -6,6 +6,7 @@ import { createPortal } from 'react-dom';
 import Modal from '../../Modal/Modal';
 import { useAuthenticationMutation } from '../../../../api/authApiSlice';
 import { useNavigate } from 'react-router-dom';
+import Form from '../../../common/Form/Form';
 
 const inputFields = [
   {
@@ -25,7 +26,7 @@ const initialWarnings = {
   password: '',
 };
 
-const SingInForm = ({ toStartPage }) => {
+const SingInForm = ({ hideForm }) => {
   const [message, setMessage] = useState('');
   const [credentials, setCredentials] = useState(initialWarnings);
   const [warnings, setWarnings] = useState(initialWarnings);
@@ -72,11 +73,11 @@ const SingInForm = ({ toStartPage }) => {
 
   return (
     <>
-      <form className={css.form} onSubmit={handleFormSubmit}>
+      <Form onSubmit={handleFormSubmit}>
         {formInputFields}
         <Button classesArr={[css.singUpBtn]} onClick={null} type={'submit'}>Sign In</Button>
-      </form>
-      <Button classesArr={[css.toStartPageBtn]} onClick={toStartPage}>To Start Page</Button>
+      </Form>
+      <Button classesArr={[css.backBtn]} kind={'negative'} onClick={hideForm}>Back</Button>
       {message && createPortal(
         <Modal>{message}</Modal>,
         document.body

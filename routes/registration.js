@@ -1,6 +1,6 @@
 const path = require('path');
 const User = require('../db/user').User;
-const { tmpDirPath, photoDirPath } = require('../libs/config');
+const { tmpDirPath, photoDirPath, noPhotoFileName } = require('../config/config');
 const storePhoto = require('../libs/photoHandler');
 const validation = require('../libs/validation');
 const { removeFile } = require('../libs/fileSystem');
@@ -36,11 +36,11 @@ const registration = async (req, res, next) => {
 
   let handledPhotoFileName = '';
   let handledPhotoSrc;
-  
+  let isPhotoStored = false;
   if (photoFileName) {
     handledPhotoFileName = path.parse(photoFileName).name + '.webp';
     handledPhotoSrc = path.join(photoDirPath, handledPhotoFileName);
-    await storePhoto(tmpPhotoSrc, handledPhotoSrc);
+    isPhotoStored = await storePhoto(tmpPhotoSrc, handledPhotoSrc);
   }
 
   const user = new User({
@@ -50,7 +50,7 @@ const registration = async (req, res, next) => {
     email: req.body.email,
     birthDate: req.body.birthDate,
     sex: req.body.sex,
-    photoFileName: handledPhotoFileName,
+    photoFileName: isPhotoStored ? handledPhotoFileName : noPhotoFileName,
   });
   
   try {

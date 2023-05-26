@@ -1,9 +1,10 @@
 import React from 'react'
 import css from './H1.module.css'
 
-const H1 = ({ children }) => {
+const H1 = ({ classesArr = [], children }) => {
+  classesArr.push(css.header);
   return (
-    <h1 className={css.header}>{children}</h1>
+    <h1 className={classesArr.join(' ')}>{children}</h1>
   )
 }
 

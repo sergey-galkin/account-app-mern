@@ -1,7 +1,6 @@
 .btn {
   padding: 10px 30px;
   border-radius: 9999px;
-  background: #7571ff;
   color: white;
   border: none;
   font-size: 1em;
@@ -9,13 +8,21 @@
   transition: .1s;
 }
 .btn:hover {
-  background: #453fff;
   cursor: pointer;
 }
 .btn:disabled {
   background: #c2c2c2;
   cursor: not-allowed;
 }
-/* .btn + .btn {
-  margin-left: 10px;
-} */
+.positive {
+  background: #7571ff;
+}
+.positive:hover {
+  background: #453fff;
+}
+.negative {
+  background: #ff4141;
+}
+.negative:hover {
+  background: #db0000;
+}

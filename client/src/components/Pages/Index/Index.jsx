@@ -35,11 +35,11 @@ const Index = () => {
     <PageTemplate classesArr={templateClasses}>
       { header }
       { user 
-        ? <Button classesArr={[css.btn, css.signOutBtn]} onClick={signOut}>Sign Out</Button>
+        ? <Button classesArr={[css.btn, css.signOutBtn]} kind={'negative'} onClick={signOut}>Sign Out</Button>
         : action === 'sign up'
-        ? <SingUpForm toStartPage={buttonsHandlers.toStartPage}/>
+        ? <SingUpForm hideForm={buttonsHandlers.toStartPage}/>
         : action === 'sign in'
-        ? <SingInForm toStartPage={buttonsHandlers.toStartPage}/>
+        ? <SingInForm hideForm={buttonsHandlers.toStartPage}/>
         : 
         <>
           <Button classesArr={[css.btn]} onClick={buttonsHandlers.signUp}>Sign Up</Button>

@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+  background: white;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 4px 10px 0px;
+  overflow: hidden;
+  margin: 10px;
+}
+.photo {
+  --size: 200px;
+  width: calc(var(--size) * 1.5);
+  height: calc(var(--size));
+  background-size: cover;
+  background-position: center;
+}
+.list {
+  list-style: none;
+  padding: 10px 20px;
+  text-align: center;
+}
+.list > li {
+  padding: 5px;
+}

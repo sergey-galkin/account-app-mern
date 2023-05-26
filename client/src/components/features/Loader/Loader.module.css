@@ -3,3 +3,12 @@
   justify-content: center;
   align-items: center;
 }
+.text {
+  transition: 1s ease-in-out;
+}
+.light {
+  color: #bebebe;
+}
+.dark {
+  color: #555555;
+}

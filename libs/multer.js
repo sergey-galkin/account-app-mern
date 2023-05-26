@@ -1,6 +1,6 @@
 const multer = require('multer');
 const path = require('path');
-const { tmpDirPath } = require('./config');
+const { tmpDirPath } = require('../config/config');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
 });
 
 function fileFilter (req, file, cb) {
-  const exts = ['image/jpeg', 'image/jpg', 'image/png'];
+  const exts = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
   
   if (exts.indexOf(file.mimetype) > -1) {
     cb(null, true)

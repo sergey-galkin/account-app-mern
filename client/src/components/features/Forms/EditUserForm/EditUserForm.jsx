@@ -1,24 +1,17 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import css from './SingUpForm.module.css';
+import css from './EditUserForm.module.css';
+import InputFile from '../../../common/InputFile/InputFile';
 import Button from '../../../common/Button/Button';
 import Input from '../../../common/Input/Input';
-import Select from '../../../common/Select/Select';
-import InputFile from '../../../common/InputFile/InputFile';
+import Form from '../../../common/Form/Form';
 import { createPortal } from 'react-dom';
 import Modal from '../../Modal/Modal';
-import axios from 'axios';
-import Form from '../../../common/Form/Form';
 
 const inputFields = [
   {
     id: 'name',
     type: 'text',
     placeholder: 'Name',
-  },
-  {
-    id: 'email',
-    type: 'email',
-    placeholder: 'Email',
   },
   {
     id: 'password',
@@ -30,38 +23,16 @@ const inputFields = [
     type: 'password',
     placeholder: 'Repeat password',
   },
-  {
-    id: 'birthDate',
-    type: 'date',
-  },
-];
-
-const selectOptions = [
-  {
-    value: '',
-    text: '-- sex --',
-  },
-  {
-    value: 'm',
-    text: 'Male',
-  },
-  {
-    value: 'f',
-    text: 'Female',
-  },
 ];
 
 const initialWarnings = {
   name: '',
-  email: '',
+  photo: '',
   password: '',
   repeatedPassword: '',
-  birthDate: '',
-  sex: '',
-  photo: '',
 };
 
-const SingUpForm = ({ hideForm }) => {
+const EditUserForm = ({ hideForm }) => {
   const [message, setMessage] = useState('');
   const [credentials, setCredentials] = useState(initialWarnings);
   const [warnings, setWarnings] = useState(initialWarnings);
@@ -84,7 +55,7 @@ const SingUpForm = ({ hideForm }) => {
     let res;
     try {
       res = await axios.post(
-        '/api/registration',
+        '/api/updateUser',
         credentials,
         {
           headers: {
@@ -106,7 +77,7 @@ const SingUpForm = ({ hideForm }) => {
       setWarnings(res.data.warnings);
       setMessage('');
     }
-  }, [credentials]);
+  }, []);
 
   const formInputFields = useMemo(
     () => inputFields.map((f) => (
@@ -122,17 +93,16 @@ const SingUpForm = ({ hideForm }) => {
     <>
       <Form onSubmit={handleFormSubmit}>
         {formInputFields}
-        <Select warning={warnings.sex} id={'sex'} options={selectOptions} onChange={handleFormFieldChange}/>
         <InputFile warning={warnings.photo} id={'photo'} name={'photo'} onChange={handleFormFieldChange}/>
-        <Button classesArr={[css.singUpBtn]} onClick={null} type={'submit'}>Sign Up</Button>
+        <Button classesArr={[css.editBtn]} kind={'positive'} onClick={null} type={'submit'}>Edit</Button>
       </Form>
-      <Button classesArr={[css.backBtn]} kind={'negative'} onClick={hideForm}>Back</Button>
+      <Button classesArr={[css.cancelBtn]} kind={'negative'} onClick={hideForm}>Cancel</Button>
       {message && createPortal(
         <Modal>{message}</Modal>,
         document.body
       )}
     </>
-  );
+  )
 }
 
-export default SingUpForm;
+export default EditUserForm
