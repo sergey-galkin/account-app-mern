@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import css from './InputFile.module.css';
+import Warning from '../Warning/Warning';
 
 const placeholder = 'Choose photo (max 1MB)';
 
@@ -16,9 +17,7 @@ const InputFile = React.memo(({warning, id, options, onChange, ...props}) => {
 
   return (
     <label className={css.fieldHolder}>
-      {warning &&
-        <div className={css.warning}>{warning}</div>
-      }
+      {warning && <Warning warning={warning} />}
       <div className={fieldClasses.join(' ')}>
         {text}
         <input id={id} type="file" onChange={handleFileChoosing} {...props}/>

@@ -18,7 +18,7 @@ const getAge = (birthDateString) => {
 const AccountCard = memo(({name, birthDate, photoFileName}) => {
   
   const imageUrl = 'url(/images/accounts/' + photoFileName;
-  const age = getAge(birthDate);
+  const age = birthDate ? getAge(birthDate) : '';
 
   return (
     <div className={css.container}>

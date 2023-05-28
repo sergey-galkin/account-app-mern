@@ -1,5 +1,5 @@
 const path = require('path');
-const { tmpDirPath, noPhotoFileName, photoDirPath } = require("../config/config");
+const { tmpDirPath, photoDirPath, noPhotoFileName } = require("../config/config");
 const { removeFile } = require("../libs/fileSystem");
 const validation = require("../libs/validation");
 const { storePhoto } = require('../libs/photoHandler');
@@ -36,7 +36,7 @@ const updateUser = async (req, res) => {
     }
   }
 
-  if (isPhotoStored) {
+  if (isPhotoStored && sessionUser.photoFileName !== noPhotoFileName) {
     const oldPhotoSrc = path.join(photoDirPath, sessionUser.photoFileName);
     removeFile(oldPhotoSrc);
   }
@@ -76,14 +76,6 @@ function checkRegData({ name, password, repeatedPassword }) {
   const status = !Object.values(warnings).find(v => v);
 
   return {status, warnings};
-};
-
-function getPhotoFileName(oldName, newName) {
-  if (oldName === noPhotoFileName) {
-    return path.parse(newName).name + '.webp';
-  } else {
-    return oldName;
-  }
 };
 
 function createUpdateQuery(fields = {}) {

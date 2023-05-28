@@ -1,12 +1,11 @@
 import React from 'react';
 import css from './Select.module.css';
+import Warning from '../Warning/Warning';
 
 const Select = React.memo(({warning, id, options, ...props}) => {
   return (
     <label className={css.fieldHolder}>
-      {warning &&
-        <div className={css.warning}>{warning}</div>
-      }
+      {warning && <Warning warning={warning} />}
       <div className={css.field}>
         <select id={id} {...props}>
           {options.map(({value, text}) => (

@@ -1,6 +1,6 @@
 const multer = require('multer');
 const path = require('path');
-const { tmpDirPath } = require('../config/config');
+const { tmpDirPath, maxPhotoSize } = require('../config/config');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -27,7 +27,7 @@ const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
   limits: {
-    fileSize: 1024 * 1024,
+    fileSize: maxPhotoSize,
   }
 });
 

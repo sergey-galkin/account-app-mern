@@ -65,7 +65,7 @@ const selectOptions = [
   },
 ];
 
-const initialWarnings = {
+const initialCredentials = {
   name: '',
   email: '',
   password: '',
@@ -77,8 +77,8 @@ const initialWarnings = {
 
 const SingUpForm = ({ hideForm }) => {
   const [message, setMessage] = useState('');
-  const [credentials, setCredentials] = useState(initialWarnings);
-  const [warnings, setWarnings] = useState(initialWarnings);
+  const [credentials, setCredentials] = useState(initialCredentials);
+  const [warnings, setWarnings] = useState(initialCredentials);
 
   const handleFormFieldChange = useCallback((e) => {
     const { id, value } = e.target;
@@ -92,7 +92,7 @@ const SingUpForm = ({ hideForm }) => {
   const handleFormSubmit = useCallback(async (e) => {
     e.preventDefault();
 
-    setWarnings(initialWarnings);
+    setWarnings(initialCredentials);
     setMessage('In progress...');
 
     let res;
